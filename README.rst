@@ -38,7 +38,7 @@ pysequila is a Python entrypoint to SeQuiLa, an ANSI-SQL compliant solution for 
 Requirements
 ============
 
-* Python 3.7, 3.8, 3.9
+* Python 3.7, 3.8, 3.9, 3.12
 
 Features
 ========
@@ -66,19 +66,20 @@ Usage
 ::
 
   $ python
+  >>> import os
   >>> from pysequila import SequilaSession
+  >>> curr_dir = os.getcwd()
   >>> ss = SequilaSession \
     .builder \
     .config("spark.jars.packages", "org.biodatageeks:sequila_2.12:1.1.0") \
     .config("spark.driver.memory", "2g") \
     .getOrCreate()
-  >>> ss.sql(
-        f"""
+  >>> ss.sql(f"""
         CREATE TABLE IF NOT EXISTS reads
         USING org.biodatageeks.sequila.datasources.BAM.BAMDataSource
-        OPTIONS(path "/features/data/NA12878.multichrom.md.bam")
-        """
-  >>> ss.sql ("SELECT * FROM  coverage('reads', 'NA12878','/features/data/Homo_sapiens_assembly18_chr1_chrM.small.fasta")
+        OPTIONS(path "{curr_dir}/features/data/NA12878.multichrom.md.bam")
+        """)
+  >>> df = ss.sql (f"SELECT * FROM  coverage('reads', 'NA12878','{curr_dir}/features/data/Homo_sapiens_assembly18_chr1_chrM.small.fasta')")
   >>> # or using DataFrame/DataSet API
-  >>> ss.coverage("/features/data/NA12878.multichrom.md.bam", "/features/data/Homo_sapiens_assembly18_chr1_chrM.small.fasta")
+  >>> df = ss.coverage(f"{curr_dir}/features/data/NA12878.multichrom.md.bam", "{curr_dir}/features/data/Homo_sapiens_assembly18_chr1_chrM.small.fasta")
 

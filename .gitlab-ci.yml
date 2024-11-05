@@ -40,6 +40,10 @@ variables:
 .python39Vars: &python39Vars
   PYTHON_VERSION: "3.9"
 
+.python312Vars: &python312Vars
+  PYTHON_VERSION: "3.12"
+
+
 .publishSnapshotVar: &publishSnapshotVar
   PYPI_REPO: "zsibio"
   DOC_URL_PREFIX: "$PAGE_URL/snapshot"
